@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.admin.mapper.ReportMapper">
+
+	<!--查询所有课程的平均成绩-->
+	<select id="courseAvgReport" resultType="cn.itfxq.admin.dto.ReportVo">
+		select c.name ,avg(s.score) avgScore
+		from t_score s
+		left join  t_course c on s.courseid = c.id
+		join sys_user u on  s.userid = u.id
+		group by c.name
+	</select>
+	<!--查询自己每个课程成绩-->
+	<select id="myScoreReport" parameterType="java.lang.Long" resultType="cn.itfxq.admin.dto.MyReportVo">
+    	select c.name ,s.score
+		from t_score s
+		left join  t_course c on s.courseid = c.id
+		join sys_user u on  s.userid = u.id
+		where s.userid = #{userid}
+		group by c.name
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

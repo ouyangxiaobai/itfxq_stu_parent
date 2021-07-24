@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.admin.mapper.NewsMapper">
+
+	<select id="queryAll"
+			resultType="News">
+		select * from t_news
+	</select>
+
+	<sql id="whereSql">
+		<where>
+			<if test="title != null and title != ''">
+				and title like concat('%',#{title},'%')
+			</if>
+		</where>
+	</sql>
+
+
+	<!--分页-->
+	<select id="queryTotal" parameterType="NewsQuery"
+			resultType="java.lang.Long">
+		select count(*) from t_news
+		<include refid="whereSql"></include>
+	</select>
+
+	<select id="queryData" parameterType="NewsQuery"
+			resultMap="NewsMap">
+		select n.*,u.id uid,u.username
+		from t_news n
+		join sys_user u on n.userid = u.id
+		<include refid="whereSql"></include>
+		order by id desc
+		limit #{start},#{pageSize}
+	</select>
+
+	<resultMap id="NewsMap" type="News">
+		<id column="id" property="id"></id>
+		<result column="title" property="title"></result>
+		<result column="content" property="content"></result>
+		<result column="fmUrl" property="fmUrl"></result>
+		<result column="createTime" property="createTime"></result>
+		<result column="userid" property="userid"></result>
+		<result column="uid" property="user.id"></result>
+		<result column="username" property="user.username"></result>
+	</resultMap>
+
+	<insert id="saveNews" parameterType="News">
+		insert into t_news(title,content,fmUrl,createTime,userid)
+		values(#{title},#{content},#{fmUrl},#{createTime},#{userid})
+	</insert>
+
+	<update id="updateNews" parameterType="News">
+		update t_news
+		set title=#{title},content=#{content},fmUrl=#{fmUrl},createTime=#{createTime},
+			userid=#{userid}
+		where id=#{id}
+	</update>
+
+	<delete id="deleteNewsById" parameterType="java.lang.Long">
+		delete from t_news where id=#{id}
+	</delete>
+
+	<select id="getNewsDetail" parameterType="java.lang.Long" resultType="News">
+		select * from t_news where id=#{id}
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

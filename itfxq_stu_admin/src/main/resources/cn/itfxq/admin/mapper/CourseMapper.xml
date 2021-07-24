@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.admin.mapper.CourseMapper">
+
+	<select id="queryAll"
+			resultType="Course">
+		select * from t_course
+	</select>
+
+	<!-- 新增-->
+	<insert id="addCourse" parameterType="Course" useGeneratedKeys="true"
+			keyProperty="id">
+		 insert into t_course(name,createTime,tid,videoUrl)
+		 values(#{name},#{createTime},#{tid},#{videoUrl})
+	</insert>
+
+
+	<sql id="whereSql">
+		<where>
+			<if test="name != null and name != ''">
+				and tc.name like concat('%',#{name},'%')
+			</if>
+		</where>
+	</sql>
+
+	<!--分页-->
+	<select id="queryTotal" parameterType="CourseQuery"
+			resultType="java.lang.Long">
+		select count(*) from t_course
+		<include refid="whereSql"></include>
+	</select>
+
+	<select id="queryData" parameterType="CourseQuery"
+			resultMap="CourseMap">
+		select tc.*,u.id uid, u.username uname
+		from t_course tc
+		join sys_user u on tc.tid = u.id
+		<include refid="whereSql"></include>
+		order by id desc
+		limit #{start},#{pageSize}
+	</select>
+	<resultMap id="CourseMap" type="Course">
+		<id property="id" column="id"></id>
+		<result property="name" column="name"></result>
+		<result property="createTime" column="createTime"></result>
+		<result property="videoUrl" column="videoUrl"></result>
+		<result property="tid" column="tid"></result>
+		<result property="user.id" column="uid"></result>
+		<result property="user.username" column="uname"></result>
+	</resultMap>
+
+
+
+	<delete id="deleteCourse" parameterType="java.lang.Long" >
+		delete from t_course where id=#{id}
+	</delete>
+
+	<!-- 批量删除 batchRemove(ids)-->
+	<delete id="batchRemove" parameterType="java.util.List">
+		delete from t_course where id in
+		<foreach collection="list" index="index" item="item"
+				 separator="," open="(" close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+	</delete>
+
+	<!-- 修改用户editSaveCourse-->
+	<update id="editSaveCourse" parameterType="Course">
+		update t_course
+		set name=#{name},tid=#{tid}
+		where id =#{id}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

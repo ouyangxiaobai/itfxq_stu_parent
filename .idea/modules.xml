@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/itfxq_stu_admin/itfxq_stu_admin.iml" filepath="$PROJECT_DIR$/itfxq_stu_admin/itfxq_stu_admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/itfxq_stu_auth/itfxq_stu_auth.iml" filepath="$PROJECT_DIR$/itfxq_stu_auth/itfxq_stu_auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/itfxq_stu_common/itfxq_stu_common.iml" filepath="$PROJECT_DIR$/itfxq_stu_common/itfxq_stu_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/itfxq_stu_parent.iml" filepath="$PROJECT_DIR$/.idea/itfxq_stu_parent.iml" />
+    </modules>
+  </component>
+</project>
